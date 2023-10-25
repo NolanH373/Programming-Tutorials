@@ -10,6 +10,9 @@ public static class InputManager
     {
         _gameControls = new GameControls();
 
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Confined;
+
         _gameControls.Permanent.Enable();
 
         _gameControls.InGame.Movement.performed += ctx =>
@@ -21,6 +24,19 @@ public static class InputManager
         {
             myPlayer.Jump();
         };
+
+        _gameControls.InGame.Shoot.performed += ctx =>
+        {
+            myPlayer.Shoot();
+            Debug.Log("Shoot");
+        };
+
+        _gameControls.InGame.Look.performed += ctx =>
+        {
+            myPlayer.SetLookDirection(ctx.ReadValue<Vector2>());
+        };
+
+        
     }
 
     public static void SetGameControls()

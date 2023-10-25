@@ -16,6 +16,11 @@ public static class InputManager
         {
             myPlayer.SetMovementDirection(ctx.ReadValue<Vector3>());
         };
+
+        _gameControls.InGame.Jump.performed += ctx =>
+        {
+            myPlayer.Jump();
+        };
     }
 
     public static void SetGameControls()

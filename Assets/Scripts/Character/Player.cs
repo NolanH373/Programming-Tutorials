@@ -4,12 +4,11 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public Rigidbody rb;
-
     [SerializeField] private float jumpspeed;
     [SerializeField] private float speed;
     private Vector3 _moveDirection;
-
+    private bool isGrounded;
+    private Rigidbody rb;
 
 
 
@@ -18,20 +17,35 @@ public class Player : MonoBehaviour
     {
         InputManager.Init(this);
         InputManager.SetGameControls();
+
+        rb = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
     void Update()
     {
         transform.position += speed * Time.deltaTime * _moveDirection;
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            rb.AddForce(Vector3.up * jumpspeed);
-        }
+        CheckGround();
     }
 
     public void SetMovementDirection(Vector3 currentDirection)
     {
         _moveDirection = currentDirection;
+    }
+
+    public void Jump()
+    {
+        Debug.Log("Jump Called");
+        if (isGrounded)
+        {
+            Debug.Log("Jumped");
+            rb.AddForce(Vector3.up * jumpspeed, ForceMode.Impulse);
+        }
+    }
+
+    private void CheckGround()
+    {
+       isGrounded = Physics.Raycast(transform.position, Vector3.down, GetComponent<Collider>().bounds.size.y);
+        Debug.DrawRay(transform.position, Vector3.down * GetComponent<Collider>().bounds.size.y, Color.green, 0, false);
     }
 }
